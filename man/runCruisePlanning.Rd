@@ -14,7 +14,8 @@ runCruisePlanning(
 )
 }
 \arguments{
-\item{file}{a connection or a character string giving the name of the file to load.}
+\item{file}{a connection or a character string giving the name of the \code{.csv} file to load. See details on the minimum
+and suggested variables.}
 
 \item{startTime}{a \code{POSIXct} format of the start date time. Suggested to use \code{ISOdatetime()} for simplicity.}
 
@@ -22,9 +23,9 @@ runCruisePlanning(
 filename, with the current local date and time appended to the end of the filename.}
 
 \item{writeSubsetCsv}{a logical value, if \code{TRUE} a \code{.csv} file will be written in the working directory using the provided
-filename, with the current local date and time appended to the end of the filename using provided names in \code{abbreviatedNames}}
+filename, with the current local date and time appended to the end of the filename using provided names in \code{subsetNames}}
 
-\item{subsetNames}{a vector of names in provided filename to be output into a \code{.csv}. Ignored if \code{writeAbbreviatedCsv = FALSE}.
+\item{subsetNames}{a vector of names in provided \code{file} to be output into a \code{.csv}. Ignored if \code{writeSubsetCsv = FALSE}.
 Defaults are \code{c('lon_dd', 'lat_dd','station','operation','depth','dist_to_next', 'arrival_time','departure_time')}. The
 output file will provide variable names in order provided. During a cruise, this is what is readily printed off and circulated to staff.}
 }
@@ -36,6 +37,29 @@ Run cruise planning. The distance to next set of coordinate, \code{dist_to_next}
 \code{transit_time}, arrival time on the coordinates, \code{arrival_time}, departure time at the coordinates, \code{departure_time},
 and the depth at the set of coordinates is added to the provided
 }
+\details{
+The following provides additional details for what to include in the provided \code{.csv} file.
+}
+\section{file}{
+
+At a minimum, the supplied \code{.csv} file should include the following variables
+\tabular{ll}{
+\strong{variable name} \tab \strong{variable description} \cr
+lon_dd \tab A numeric value indicating longitude in decimal degrees. \cr
+lat_dd \tab A numeric value indicating latitude in decimal degrees. \cr
+optime \tab A numeric value indicating the total expected operational time in hours at given lon_dd, lat_dd. \cr
+transit_speed \tab A numeric value indicating the transit speed of the vessel.
+}
+Additional variables that are suggested (but not limited to):
+\tabular{ll}{
+\strong{variable name} \tab \strong{variable description} \cr
+xoptime \tab A numeric value indicating any extra operational time in hours at given lon_dd, lat_dd. \cr
+station \tab A character string indicating the name of the station. \cr
+operation \tab An character string indicating the specific operation order for the given operation type (e.g. Net_CTD, Net_CTD_Argo, Net_2_CTD). \cr
+type \tab A character string indicating the operation type (e.g. \code{operation}, \code{transit}).\cr
+}
+}
+
 \author{
 Chantelle Layton
 }
