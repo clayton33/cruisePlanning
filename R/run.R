@@ -10,10 +10,10 @@
 #' @param writeCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
 #' filename, with the current local date and time appended to the end of the filename.
 #' @param writeSubsetCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
-#' filename, with the current local date and time appended to the end of the filename using provided names in `subsetNames`
-#' @param subsetNames a vector of names in provided `file` to be output into a `.csv`. Ignored if `writeSubsetCsv = FALSE`.
-#' Defaults are `c('lon_dd', 'lat_dd','station','operation','depth','dist_to_next', 'arrival_time','departure_time')`. The
+#' filename, with the current local date and time appended to the end of the filename using provided names in `subsetNames`.The
 #' output file will provide variable names in order provided. During a cruise, this is what is readily printed off and circulated to staff.
+#' @param subsetNames a vector of names in provided `file` to be output into a `.csv`. Ignored if `writeSubsetCsv = FALSE`.
+#' Defaults are `c('lon_dd', 'lat_dd','station','operation','depth','dist_to_next', 'arrival_time','departure_time')`.
 #'
 #' @details The following provides additional details for what to include in the provided `.csv` file.
 #' @section file:
@@ -128,4 +128,5 @@ runCruisePlanning <- function(file,
                         sep = '/')
     utils::write.csv(x = dnewsub, file = outputFile)
   }
+  return(dnew)
 }

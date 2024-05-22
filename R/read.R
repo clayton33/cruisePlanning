@@ -5,7 +5,8 @@
 #'
 #' @param file a connection or a character string giving the name of the file to load.
 #'
-#' @details
+#' @details Description of the minimum variables that should be included in the cruise input file,
+#' along with some suggestions
 #' @section file:
 #' At a minimum, the supplied `.csv` file should include the following variables
 #' \tabular{ll}{

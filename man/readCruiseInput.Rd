@@ -16,6 +16,10 @@ a data.frame
 Read in mission input file required for \code{runCruisePlanning}. It will
 check for required columns. See details for required columns.
 }
+\details{
+Description of the minimum variables that should be included in the cruise input file,
+along with some suggestions
+}
 \section{file}{
 
 At a minimum, the supplied \code{.csv} file should include the following variables

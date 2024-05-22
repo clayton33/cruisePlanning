@@ -23,11 +23,11 @@ and suggested variables.}
 filename, with the current local date and time appended to the end of the filename.}
 
 \item{writeSubsetCsv}{a logical value, if \code{TRUE} a \code{.csv} file will be written in the working directory using the provided
-filename, with the current local date and time appended to the end of the filename using provided names in \code{subsetNames}}
+filename, with the current local date and time appended to the end of the filename using provided names in \code{subsetNames}.The
+output file will provide variable names in order provided. During a cruise, this is what is readily printed off and circulated to staff.}
 
 \item{subsetNames}{a vector of names in provided \code{file} to be output into a \code{.csv}. Ignored if \code{writeSubsetCsv = FALSE}.
-Defaults are \code{c('lon_dd', 'lat_dd','station','operation','depth','dist_to_next', 'arrival_time','departure_time')}. The
-output file will provide variable names in order provided. During a cruise, this is what is readily printed off and circulated to staff.}
+Defaults are \code{c('lon_dd', 'lat_dd','station','operation','depth','dist_to_next', 'arrival_time','departure_time')}.}
 }
 \value{
 a data.frame with added calculated variables, which includes \code{dist_to_next}, \code{transit_time}, \code{arrival_time}, and \code{departure_time}
@@ -35,7 +35,7 @@ a data.frame with added calculated variables, which includes \code{dist_to_next}
 \description{
 Run cruise planning. The distance to next set of coordinate, \code{dist_to_next}, transit time to next set of coordinates,
 \code{transit_time}, arrival time on the coordinates, \code{arrival_time}, departure time at the coordinates, \code{departure_time},
-and the depth at the set of coordinates is added to the provided
+and the depth at the set of coordinates is added to the provided variables in the supplied \code{file}.
 }
 \details{
 The following provides additional details for what to include in the provided \code{.csv} file.
