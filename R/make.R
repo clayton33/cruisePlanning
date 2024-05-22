@@ -8,6 +8,8 @@
 #' Default is `NULL`, meaning put labels for all factors.
 #' @param labelColumn a character vector of length one indicating which column in `data` to use as labels on the map
 #' for the given indicated factor in `markerLabelFactor` for the `markerColumn`.
+#' @param markerPopupNames a character vector of desired columns in `data` to display in popup for each station.
+#' Default is `NULL`, meaning include information from all columns in `data`. If `FALSE`, no popup will show.
 #' Default is `NULL`, meaning label each station with a sequential number. If `FALSE`, no labels will be placed at each station.
 #' @param NAFOShpFile a connection or a character string giving the name of the `.shp` file associated with the
 #' NAFO zones. See details on where to download this file.
@@ -53,11 +55,14 @@ makeCruisePlanningMap <- function(data,
                                   markerColumn = NULL,
                                   labelColumn = NULL,
                                   markerLabelFactor = NULL,
+                                  markerPopupNames = NULL,
                                   NAFOShpFile,
                                   MPAShpFile,
                                   ClosureShpFile
                                   ){
+  ##
   # check markerColumn input
+  ##
   if(is.null(markerColumn)){ # add placeholder to get markerCol if NULL
     data <- data.frame(data,
                        markerColumn = 'All')
@@ -70,7 +75,9 @@ makeCruisePlanningMap <- function(data,
   }
   ## set up colors for coordinate markers
   markerCol <- leaflet::colorFactor(palette = 'Dark2', levels = unique(data[[which(names(data) == markerColumn)]]))
+  ##
   # check markerLabelFactor input
+  ##
   if(is.null(markerLabelFactor)){ # labeling all points
     markerLabelIdx <- 1:dim(data)[1]
   } else { # not NULL, subset based on provided factors
@@ -85,18 +92,20 @@ makeCruisePlanningMap <- function(data,
       } else { # at least one provided factor not in markerColumn, proceed depending on number
         if(any(inMarkerColumn)){
           message(paste("only", length(which(inMarkerColumn)), "provided 'markerLabelFactor' in 'markerColumn'.",
-                        "Factors not in 'markerColumn' are:", paste(markerLabelFactor[!inMarkerColumn], collapse = ', '), ".",
+                        "Factor(s) not in 'markerColumn' are:", paste(markerLabelFactor[!inMarkerColumn], collapse = ', '), ".",
                         "Potential factors to provide include : ",  paste(unique(data[[markerColumn]]), collapse = ', '), "."))
           markerLabelIdx <- which(data[[markerColumn]] %in% markerLabelFactor)
         } else { # none of provided factors in 'markerColumn'
-          stop(paste("Provided factors, ", paste(markerLabelFactor, collapse = ', '), "are not in 'markerColumn'",
+          stop(paste("Provided 'markerLabelFactor', ", paste(markerLabelFactor, collapse = ', '), "are not in 'markerColumn'",
                      "Please provide one or more of the following :", paste(unique(data[[markerColumn]]), collapse = ', '), ".",
                      "OR supply 'NULL' to label all points."))
         } # closes else of 'any(inMarkerColumn)'
       } # closese else of 'all(inMarkerColumn)'
     } # closes else of if 'markerColumn' input is not NULL
   } # closes else of if 'is.null(markerLabelFactor)', meaning factors have been provided
+  ##
   # check labelColumn
+  ##
   if(is.null(labelColumn)){ #sequentially label points
     # same index as markerLabelFactor
     markerLabel <- 1:length(markerLabelIdx)
@@ -114,8 +123,38 @@ makeCruisePlanningMap <- function(data,
       markerLabel <- data[[labelColumn]][markerLabelIdx]
     }
   }
-
-  # read in files
+  ##
+  # markerPopupNames, construct popup text
+  ##
+  createPopup <- function(data, names){
+    dsub <- data[, names(data) %in% names]
+    pu <- apply(X = dsub,
+                MARGIN = 1, # rows
+                FUN = function(k) paste("<br>","<b>", names(k), ":</b>", k, collapse = '') # not sure if 'collapse' is correct
+                )
+    pu
+  }
+  if(is.null(markerPopupNames)){ # include all information
+    markerPopup <- createPopup(data = data, names = names(data))
+  } else if(markerPopupNames == FALSE){
+    markerPopup <- NA # not sure
+  } else { # markerPopupNames provided
+    # check that the names provided are in data
+    inData <- markerPopupNames %in% names(data)
+    if(any(inData)){
+      message(paste("only", length(which(inData)), "provided 'markerPopupNames' in 'data'.",
+                    "'markerPopupNames' not in data are:", paste(markerPopupNames[!inData], collapse = ', '), ".",
+                    "Potential names to provide include : ",  paste(names(data), collapse = ', '), "."))
+      markerPopup <- createPopup(data = data, names = markerPopupNames)
+    } else { # none of provided factors in 'markerColumn'
+      stop(paste("Provided 'markerPopupNames', ", paste(markerPopupNames, collapse = ', '), "are not in 'data'",
+                 "Please provide one or more of the following :", paste(names(data), collapse = ', '), ".",
+                 "OR supply 'NULL' to include all information in data or FALSE for no popup."))
+    } # closes else of 'any(inData)'
+  }
+  ##
+  # read in shp files
+  ##
   ## NAFO
   nafo <- sf::st_read(NAFOShpFile) %>%
     sf::st_transform('+proj=longlat +datum=WGS84')
@@ -161,6 +200,7 @@ makeCruisePlanningMap <- function(data,
                                       sep=" "),
                           highlightOptions = leaflet::highlightOptions(color = "white", weight = 5, bringToFront = FALSE))%>%
     leaflet::addCircleMarkers(data = data, lng = ~lon_dd, lat = ~lat_dd,
+                              popup = markerPopup,
                               group = "Route",
                               color = markerCol(data[[markerColumn]]),
                               weight = 2, radius = 6, stroke = TRUE,
