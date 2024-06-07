@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Chantelle Layton" />
+
+<meta name="date" content="2024-06-07" />
+
+<title>How to use this package to plan an at-sea mission</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">How to use this package to plan an at-sea
+mission</h1>
+<h4 class="author">Chantelle Layton</h4>
+<h4 class="date">2024-06-07</h4>
+
+
+
+<div id="initial-statement" class="section level1">
+<h1>Initial statement</h1>
+<p>The intention of this vignette is to provide very detailed
+instructions aimed at those who are not regular users of R and those who
+have used previous iterations of mission planning scripts. Some
+suggestions on directory set-up for each unique mission is provided near
+the end. If a user finds a bug in the code, would like additional
+features added, or require additional clarification, please report an
+issue on the github page. If you do not feel comfortable posting an
+issue, please send an email the package author.</p>
+</div>
+<div id="what-this-package-does" class="section level1">
+<h1>What this package does</h1>
+<p>The primary motivation to develop this package was to centralize and
+simplify the original cruise planning script that was used to plan
+countless Fisheries and Oceans Canada Atlantic Zone Monitoring Program
+missions. At it’s core, it does simple calculations to estimate the
+total time it would take to complete operations at a given set of
+stations. This helps Principal Investigators and/or Chief Scientists
+plan a mission, both prior and while at sea, by allowing them to run
+various scenarios to best utilize the allotted amount of ship time
+provided for them to complete their program.</p>
+<p>An initial file with a minimum of station longitude and latitude
+coordinates, the total operation time at that station, and the transit
+speed provided by the user. Using the function
+<code>runCruisePlanning()</code>, the distance to the next station, the
+transit time to the next station, the arrival time to the station, and
+the departure time are calculated from the provided variables with the
+indicated start time of the mission. The user has the option to output
+the provided variables and the calculated variables to a
+<code>.csv</code> file, as well as output a subset of these variables,
+which is indicated by the users, to a <code>.csv</code> file. From here,
+using the function <code>makeCruisePlanningMap()</code> the user can
+create a simple <code>leaflet</code> <code>.html</code> map of the
+planned mission, which can be saved, or simply viewed in the users
+<code>gui</code> (e.g. RStudio) of choice.</p>
+</div>
+<div id="getting-started" class="section level1">
+<h1>Getting started</h1>
+<p>To install the <code>cruisePlanning</code> package, please follow the
+instructions provided in the <code>README</code> file on the github
+page.</p>
+</div>
+<div id="the-supplied-mission-file" class="section level1">
+<h1>The supplied mission file</h1>
+<p>Many of the details provided here can be found in the help file
+(which is accessed by <code>?runCruisePlanning</code> in the R Console),
+but are reiterated here for completeness.</p>
+<p>Prior to running the cruise planning function,<code>a</code>.csv`
+files needs to be constructed for the planned operations or the mission.
+The minimum set of variables that should be included in this file
+include the following, with the provided description:</p>
+<p>Additional variables that are recommended, but certainly not limited
+to, if conducting a hydrographic survey :</p>
+<p>For the most accurate cruise duration calculations, guessed transit
+points out and into port should be included.</p>
+</div>
+<div id="running-cruise-planning" class="section level1">
+<h1>Running cruise planning</h1>
+<p>Now that a mission file has been created, it is time to write the
+script. The parameters that are required to be supplied to
+<code>runCruisePlanning()</code> are <code>file</code>, which is the
+user constructed mission file, and <code>startTime</code>, which is the
+estimated start time of the mission that should be a
+<code>POSIXct</code> formatted date-time object. Two suggested options,
+which is not limited to, is to use the <code>as.POSIXct()</code>
+function, or <code>ISOdatetime()</code> function. Examples of using both
+ways to get a date time object will be provided below</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(cruisePlanning)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co"># provide path to the file</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="st">&#39;path/to/file.csv&#39;</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># provide startTime, two suggestions</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>startTime <span class="ot">&lt;-</span> <span class="fu">ISOdatetime</span>(<span class="at">year =</span> <span class="dv">2024</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>                         <span class="at">month =</span> <span class="dv">4</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>                         <span class="at">day =</span> <span class="dv">18</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>                         <span class="at">hour =</span> <span class="dv">6</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>                         <span class="at">min =</span> <span class="dv">0</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>                         <span class="at">sec =</span> <span class="dv">0</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>                         <span class="at">tz =</span> <span class="st">&quot;&quot;</span> <span class="co"># leaving it as &quot;&quot; denotes the current time zone, can set to &#39;UTC&#39;</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>                         )</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>startTime <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="at">x =</span> <span class="st">&quot;2024-04-18 06:00:00&quot;</span>) <span class="co"># again, can specify another timezone other than your current timezone by the &#39;tz&#39; parameter</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">runCruisePlanning</span>(<span class="at">file =</span> file,</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>                       <span class="at">startTime =</span> startTime)</span></code></pre></div>
+<div id="writecsv" class="section level3">
+<h3>writeCsv</h3>
+<p>The function provides an option if the user would like the mission
+file with the calculated variables to be written in the working
+directory. If set to <code>TRUE</code>, a <code>.csv</code> file will be
+written in the working directory using the filename from
+<code>file</code>, with the current local date and time that the
+scenario was ran appended to the end of the filename. If set to
+<code>FALSE</code>, a <code>.csv</code> file is not written.</p>
+</div>
+<div id="writesubsetcsv" class="section level3">
+<h3>writeSubsetCsv</h3>
+<p>In some cases, a subset of the mission file is nice to have to print
+off for staff so they have an idea of the expected time to get on
+station and the distance to the next station. If <code>TRUE</code>, a
+file with a similar filename as <code>writeCsv</code> is written, but
+subset is at the end of it to be able to distinguish the two. It uses
+the provided <code>subsetNames</code>. A set of default variables are
+provided, but the user can provide their own. The file written will
+output the columns in the order provided in
+<code>subsetNames</code>.</p>
+</div>
+</div>
+<div id="create-a-leaflet-map" class="section level1">
+<h1>Create a leaflet map</h1>
+<p>The next (optional) step is to create a leaflet map, which is output
+as a <code>.html</code> file, using the function
+<code>makeCruisePlanningMap</code>. The function takes the resulting
+data from running <code>runCruisePlanning()</code>, or alternatively the
+user can read in the supplied mission file (again, details are provided
+in the help file by doing <code>?makeCruisePlanningMap</code>). There
+are three optional parameters <code>markerColumn</code>,
+<code>labelColumn</code>, and <code>markerLabelFactor</code>. They are
+all used together in some way, so a summary of how to use them is
+provided.</p>
+<p><code>markerColumn</code> lets the user choose which variable in
+<code>data</code> that will be used colour code if desired. The default
+is <code>NULL</code>, meaning that all points on the map will be the
+same colour. If a variable is provided, the points will be colour coded
+by the unique factors. For example, if the chosen column had
+<code>c(&#39;Transit&#39;, &#39;Core Station&#39;, &#39;Mooring&#39;, &#39;Mooring&#39;, &#39;Transit&#39;)</code>,
+there are 3 unique elements, therefore, the point on the map would have
+a different colour for each element, in this case it would be
+<code>Transit</code>, <code>Core Station</code>, and
+<code>Mooring</code>.</p>
+<p><code>labelColumn</code> allows the user to provide a column in
+<code>data</code> that will be used to label the points (or
+<code>markers</code>) on the map. There are two other options to choose,
+if <code>NULL</code> is provided (the default value), each
+longitude,latitude coordinate is labelled sequentially on the map. If
+<code>FALSE</code>, no labels will appear on the map.</p>
+<p><code>markerLabelFactor</code> allows the user to define which
+factor(s) in <code>markerColumn</code> is used to subset the labels from
+<code>labelColumn</code> to be shown on the map. Following the example
+provided in <code>markerColumn</code>, if the user provided
+<code>Core Station</code>, then the coordinates associated with that
+factor will have a label on the map with the provided value in
+<code>labelColumn</code>.</p>
+<p>The three other optional parameters are shape files for various areas
+to be plotted on the map. Detail are provided when the user can download
+the files. It is suggested that when they are downloaded, they are
+placed in the working directory and are placed within a directory,
+either separate for each, or all together.</p>
+</div>
+<div id="example-script" class="section level1">
+<h1>Example script</h1>
+<p>The following is an example of what could routinely be used, given
+that the user provides an actual file.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(cruisePlanning)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># provide path to the file</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="st">&#39;path/to/file.csv&#39;</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># provide startTime, two suggestions</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>startTime <span class="ot">&lt;-</span> <span class="fu">ISOdatetime</span>(<span class="at">year =</span> <span class="dv">2024</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>                         <span class="at">month =</span> <span class="dv">4</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>                         <span class="at">day =</span> <span class="dv">18</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>                         <span class="at">hour =</span> <span class="dv">6</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>                         <span class="at">min =</span> <span class="dv">0</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>                         <span class="at">sec =</span> <span class="dv">0</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>                         <span class="at">tz =</span> <span class="st">&quot;&quot;</span> <span class="co"># leaving it as &quot;&quot; denotes the current time zone, can set to &#39;UTC&#39;</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>                         )</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">runCruisePlanning</span>(<span class="at">file =</span> file,</span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>                       <span class="at">startTime =</span> startTime)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>map <span class="ot">&lt;-</span> <span class="fu">makeCruisePlanningMap</span>(<span class="at">data =</span> d) <span class="co"># leaving all other parameters NULL</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>map <span class="co"># to view in &#39;Viewer&#39; in RStudio.</span></span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

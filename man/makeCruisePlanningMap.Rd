@@ -9,9 +9,10 @@ makeCruisePlanningMap(
   markerColumn = NULL,
   labelColumn = NULL,
   markerLabelFactor = NULL,
-  NAFOShpFile,
-  MPAShpFile,
-  ClosureShpFile
+  markerPopupNames = NULL,
+  NAFOShpFile = NULL,
+  MPAShpFile = NULL,
+  ClosureShpFile = NULL
 )
 }
 \arguments{
@@ -22,20 +23,23 @@ in the data file using \code{readCruiseInput}.}
 meaning all coordinates will be the same colour.}
 
 \item{labelColumn}{a character vector of length one indicating which column in \code{data} to use as labels on the map
-for the given indicated factor in \code{markerLabelFactor} for the \code{markerColumn}.
-Default is \code{NULL}, meaning label each station with a sequential number. If \code{FALSE}, no labels will be placed at each station.}
+for the given indicated factor in \code{markerLabelFactor} for the \code{markerColumn}.}
 
 \item{markerLabelFactor}{a character vector indicating which factors in \code{markerColumn} to label on the map.
 Default is \code{NULL}, meaning put labels for all factors.}
 
-\item{NAFOShpFile}{a connection or a character string giving the name of the \code{.shp} file associated with the
-NAFO zones. See details on where to download this file.}
+\item{markerPopupNames}{a character vector of desired columns in \code{data} to display in popup for each station.
+Default is \code{NULL}, meaning include information from all columns in \code{data}. If \code{FALSE}, no popup will show.
+Default is \code{NULL}, meaning label each station with a sequential number. If \code{FALSE}, no labels will be placed at each station.}
 
-\item{MPAShpFile}{a connection or a character string giving the name of the \code{.shp} file associated
-with marine protected areas. See details on where to download this file.}
+\item{NAFOShpFile}{optional, a connection or a character string giving the name of the \code{.shp} file associated with the
+NAFO zones. See details on where to download this file. Default is \code{NULL}.}
 
-\item{ClosureShpFile}{a connection or a character string giving the name of the \code{.shp} file associated
-with Other Effective Area-Based Conservation Measures (OECM). See details on where to download this file.}
+\item{MPAShpFile}{optional, a connection or a character string giving the name of the \code{.shp} file associated
+with marine protected areas. See details on where to download this file. Default is \code{NULL}.}
+
+\item{ClosureShpFile}{optional, a connection or a character string giving the name of the \code{.shp} file associated
+with Other Effective Area-Based Conservation Measures (OECM). See details on where to download this file. Default is \code{NULL}.}
 }
 \description{
 Create cruise map

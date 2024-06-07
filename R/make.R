@@ -11,12 +11,12 @@
 #' @param markerPopupNames a character vector of desired columns in `data` to display in popup for each station.
 #' Default is `NULL`, meaning include information from all columns in `data`. If `FALSE`, no popup will show.
 #' Default is `NULL`, meaning label each station with a sequential number. If `FALSE`, no labels will be placed at each station.
-#' @param NAFOShpFile a connection or a character string giving the name of the `.shp` file associated with the
-#' NAFO zones. See details on where to download this file.
-#' @param MPAShpFile a connection or a character string giving the name of the `.shp` file associated
-#' with marine protected areas. See details on where to download this file.
-#' @param ClosureShpFile a connection or a character string giving the name of the `.shp` file associated
-#' with Other Effective Area-Based Conservation Measures (OECM). See details on where to download this file.
+#' @param NAFOShpFile optional, a connection or a character string giving the name of the `.shp` file associated with the
+#' NAFO zones. See details on where to download this file. Default is `NULL`.
+#' @param MPAShpFile optional, a connection or a character string giving the name of the `.shp` file associated
+#' with marine protected areas. See details on where to download this file. Default is `NULL`.
+#' @param ClosureShpFile optional, a connection or a character string giving the name of the `.shp` file associated
+#' with Other Effective Area-Based Conservation Measures (OECM). See details on where to download this file. Default is `NULL`.
 #'
 #' @details
 #' * NAFO `.shp` file can be downloaded from \url{https://www.nafo.int/Data/GIS} (accessed on 2024-05-15), click on `Divisions`.
@@ -47,6 +47,8 @@
 #' @importFrom leaflet layersControlOptions
 #' @importFrom leaflet colorFactor
 #' @importFrom magrittr %>%
+#' @importFrom sf st_sf
+#' @importFrom sf st_sfc
 #'
 #' @author Chantelle Layton
 #' @export
@@ -56,9 +58,9 @@ makeCruisePlanningMap <- function(data,
                                   labelColumn = NULL,
                                   markerLabelFactor = NULL,
                                   markerPopupNames = NULL,
-                                  NAFOShpFile,
-                                  MPAShpFile,
-                                  ClosureShpFile
+                                  NAFOShpFile = NULL,
+                                  MPAShpFile = NULL,
+                                  ClosureShpFile = NULL
                                   ){
   ##
   # check markerColumn input
@@ -156,8 +158,13 @@ makeCruisePlanningMap <- function(data,
   # read in shp files
   ##
   ## NAFO
-  nafo <- sf::st_read(NAFOShpFile) %>%
-    sf::st_transform('+proj=longlat +datum=WGS84')
+  if(!is.null(NAFOShpFile)){
+      nafo <- sf::st_read(NAFOShpFile) %>%
+              sf::st_transform('+proj=longlat +datum=WGS84')
+  } else {
+    nafo <- sf::st_sf(sf::st_sfc())
+  }
+
   ## MPA
   mpa <- sf::st_read(MPAShpFile) %>%
     sf::st_transform('+proj=longlat +datum=WGS84')
