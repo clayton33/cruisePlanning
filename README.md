@@ -8,7 +8,7 @@ This is currently a provisional package, so it is only available on github. To d
 
 ```
 library(devtools)
-install_github('clayton33/cruisePlanning', ref = 'master', build_vignettes = TRUE)
+install_github('clayton33/cruisePlanning', ref = 'main', build_vignettes = TRUE)
 ```
 
 # General information
