@@ -20,4 +20,4 @@ library(cruisePlanning)
 browseVignettes("cruisePlanning")
 ```
 
-this will open up a local browser, click on the `HTML`.
+this will open up a local browser, click on the `HTML` link.
