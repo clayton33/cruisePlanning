@@ -4,8 +4,8 @@
 #' `transit_time`, arrival time on the coordinates, `arrival_time`, departure time at the coordinates, `departure_time`,
 #' and the depth at the set of coordinates is added to the provided variables in the supplied `file`.
 #'
-#' @param file a connection or a character string giving the name of the `.csv` file to load. See details on the minimum
-#' and suggested variables.
+#' @param file a connection or a character string giving the name of the `.csv` file to load or a `data.frame` that contains the minimum
+#' set of variables. See details on the minimum and suggested variables.
 #' @param startTime a `POSIXct` format of the start date time. Suggested to use `ISOdatetime()` for simplicity.
 #' @param writeCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
 #' filename, with the current local date and time appended to the end of the filename.
@@ -34,6 +34,25 @@
 #' type \tab A character string indicating the operation type (e.g. `operation`, `transit`).\cr
 #' }
 #'
+#' @section Sample of usage :
+#' \preformatted{
+#' library(cruisePlanning)
+#' data(halifaxLineMission)
+#' startTime <- ISOdatetime(year = 2024,
+#'                          month = 4,
+#'                          day = 18,
+#'                          hour = 6,
+#'                          min = 0,
+#'                          sec = 0,
+#'                          tz = "" # leaving it as "" denotes the current time zone, can set to 'UTC'
+#'                          )
+#' d <- runCruisePlanning(file = halifaxLineMission,
+#'                        startTime = startTime,
+#'                        writeCsv = FALSE, # for example purposes
+#'                        writeSubsetCsv = FALSE # for example purposes
+#'                        )
+#' }
+#'
 #'
 #' @author Chantelle Layton
 #'
@@ -52,8 +71,42 @@ runCruisePlanning <- function(file,
                                               'dist_to_next',
                                               'arrival_time',
                                               'departure_time')) {
-  # Read in cruise input file
-  d <- readCruiseInput(file)
+  if(inherits(file, "data.frame")){
+    d <- file
+    # check to see that it has minimum set of variables
+    # this is copied over from 'read.R (readCruiseInput), there is a note there to update this fn if necessary
+    # define minimum required columns
+    requiredColumns <- c("lon_dd",
+                         "lat_dd",
+                         "optime",
+                         "transit_speed")
+    # define required columns description (for error messages)
+    requiredColumnsDescrip <- c("A numeric value indicating longitude in decimal degrees.",
+                                "A numeric value indicating latitude in decimal degrees.",
+                                "A numeric value indicating the total expected operational time in hours at given lon_dd, lat_dd.",
+                                "A numeric value indicating the transit speed of the vessel.")
+    # check for required columns
+    dnames <- names(d)
+    ind <- requiredColumns %in% dnames
+    if(!all(ind)){
+      missingColumns <- which(!ind)
+      missingText <- paste("Missing the following required columns in provided file: ",
+                           paste(
+                             paste(requiredColumns[missingColumns],
+                                   requiredColumnsDescrip[missingColumns], sep = ' : '),
+                             collapse = '\n'),
+                           sep = '\n')
+      stop(missingText)
+    } else {
+      d
+    }
+  } else if(inherits(file, "character")){
+    # Read in cruise input file
+    d <- readCruiseInput(file)
+  } else {
+    stop("first argument 'file' must be a 'data.frame' or 'character' string")
+  }
+
   # Calculations
   ## Distance to next station
   distToNextStation <- calculateDistanceToNextStation(longitude = d[['lon_dd']],
@@ -83,6 +136,13 @@ runCruisePlanning <- function(file,
                      arrival_time = arrivalAndDepartureTime[['arrivalTime']],
                      departure_time = arrivalAndDepartureTime[['departureTime']],
                      depth = sprintf('%.0f', bottomDepth))
+  # calculate the total time of the planned cruise
+  duration <- paste("The estimated total time to complete the proposed cruise is",
+                          sprintf('%.2f', difftime(strptime(dnew[['arrival_time']][dim(dnew)[1]],"%Y-%m-%d %H:%M:%S"),
+                                          strptime(dnew[['departure_time']][1],"%Y-%m-%d %H:%M:%S"),
+                                  units = 'days')),
+                     "days.", sep=" ")
+  cat(duration, sep = '\n')
   # write data if specified
   if(writeCsv){
     # Construct output filename

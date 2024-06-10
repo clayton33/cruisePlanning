@@ -34,6 +34,7 @@
 
 readCruiseInput <- function(file) {
   d <- utils::read.csv(file = file)
+  # if required[Columns,ColumnsDescrip] changes, update in run.R (runCruisePlanning) function
   # define minimum required columns
   requiredColumns <- c("lon_dd",
                        "lat_dd",

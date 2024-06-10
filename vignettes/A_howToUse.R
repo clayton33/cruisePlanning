@@ -6,6 +6,11 @@ knitr::opts_chunk$set(
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library(cruisePlanning)
+#  data("halifaxLineMission")
+#  halifaxLineMission
+
+## ----eval=FALSE---------------------------------------------------------------
+#  library(cruisePlanning)
 #  # provide path to the file
 #  file <- 'path/to/file.csv'
 #  # provide startTime, two suggestions
@@ -23,9 +28,10 @@ knitr::opts_chunk$set(
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  library(cruisePlanning)
+#  data("halifaxLineMission")
 #  # provide path to the file
-#  file <- 'path/to/file.csv'
-#  # provide startTime, two suggestions
+#  #file <- 'path/to/file.csv'
+#  # provide startTime
 #  startTime <- ISOdatetime(year = 2024,
 #                           month = 4,
 #                           day = 18,
@@ -34,8 +40,15 @@ knitr::opts_chunk$set(
 #                           sec = 0,
 #                           tz = "" # leaving it as "" denotes the current time zone, can set to 'UTC'
 #                           )
-#  d <- runCruisePlanning(file = file,
-#                         startTime = startTime)
-#  map <- makeCruisePlanningMap(data = d) # leaving all other parameters NULL
+#  d <- runCruisePlanning(file = halifaxLineMission, # replace `halifaxLineMission` with user defined `file`
+#                         startTime = startTime,
+#                         writeCsv = FALSE,
+#                         writeSubsetCsv = FALSE
+#                         )
+#  # create map
+#  map <- makeCruisePlanningMap(data = d,
+#                               markercolumn = 'type',
+#                               labelColumn = 'station',
+#                               markerLabelFactor = 'Operations')
 #  map # to view in 'Viewer' in RStudio.
 

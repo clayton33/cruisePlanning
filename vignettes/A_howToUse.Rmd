@@ -17,13 +17,13 @@ knitr::opts_chunk$set(
 ```
 
 # Initial statement
-The intention of this vignette is to provide very detailed instructions aimed at those who are not regular users of R and those who have used previous iterations of mission planning scripts. Some suggestions on directory set-up for each unique mission is provided near the end. If a user finds a bug in the code, would like additional features added, or require additional clarification, please report an issue on the github page. If you do not feel comfortable posting an issue, please send an email the package author.
+The intention of this vignette is to provide very detailed instructions aimed at those who are not regular users of R and those who have used previous iterations of mission planning scripts. Some suggestions on directory set-up for each unique mission is provided near the end. If a user finds a bug in the code, would like additional features added, or require additional clarification, please report an issue on the github page. If you do not feel comfortable posting an issue, please send an email to the package author.
 
 # What this package does
 
-The primary motivation to develop this package was to centralize and simplify the original cruise planning script that was used to plan countless Fisheries and Oceans Canada Atlantic Zone Monitoring Program missions. At it's core, it does simple calculations to estimate the total time it would take to complete operations at a given set of stations. This helps Principal Investigators and/or Chief Scientists plan a mission, both prior and while at sea, by allowing them to run various scenarios to best utilize the allotted amount of ship time provided for them to complete their program.
+The primary motivation to develop this package was to centralize and generalize the functionality of the original cruise planning script that was used to plan countless Fisheries and Oceans Canada Atlantic Zone Monitoring Program. At it's core, it does simple calculations to estimate the total time it would take to complete operations at a given set of stations. This helps Principal Investigators and/or Chief Scientists plan a mission, both prior and while at sea, by allowing them to run various scenarios to best utilize the allotted amount of ship time provided for them to complete their program.
 
-An initial file with a minimum of station longitude and latitude coordinates, the total operation time at that station, and the transit speed provided by the user. Using the function `runCruisePlanning()`, the distance to the next station, the transit time to the next station, the arrival time to the station, and the departure time are calculated from the provided variables with the indicated start time of the mission. The user has the option to output the provided variables and the calculated variables to a `.csv` file, as well as output a subset of these variables, which is indicated by the users, to a `.csv` file. From here, using the function `makeCruisePlanningMap()` the user can create a simple `leaflet` `.html` map of the planned mission, which can be saved, or simply viewed in the users `gui` (e.g. RStudio) of choice.
+An initial file with a minimum of station longitude and latitude coordinates, the total operation time at that station, and the transit speed  is provided by the user. Using the function `runCruisePlanning()`, the estimated depth at the station, the distance to the next station, the transit time to the next station, the arrival time to the station, and the departure time are calculated from the provided variables from the provided start time of the mission. The user has the option to output the provided variables and the calculated variables to a `.csv` file, as well as output a subset of these variables, which is indicated by the user, to a `.csv` file. From here, using the function `makeCruisePlanningMap()` the user can create a simple `leaflet` `.html` map of the planned mission, which can be saved, or simply viewed in the users `gui` (e.g. RStudio) of choice.
 
 # Getting started
 
@@ -31,29 +31,37 @@ To install the `cruisePlanning` package, please follow the instructions provided
 
 # The supplied mission file
 
-Many of the details provided here can be found in the help file (which is accessed by `?runCruisePlanning` in the R Console), but are reiterated here for completeness. 
+Many of the details provided here can be found in the help file (which is accessed by `?runCruisePlanning` in the R Console), but are reiterated here for completeness.
 
-Prior to running the cruise planning function,` a `.csv` files needs to be constructed for the planned operations or the mission. The minimum set of variables that should be included in this file include the following, with the provided description:
+Prior to running the cruise planning function, a `.csv` files needs to be constructed for the planned operations or the mission. The minimum set of variables that should be included in this file include the following, with the provided description:
 
-\tabular{ll}{
-  \strong{name} \tab \strong{description} \cr
-  lon_dd \tab A numeric value indicating longitude in decimal degrees. \cr
-  lat_dd \tab A numeric value indicating latitude in decimal degrees. \cr
-  optime \tab A numeric value indicating the total expected operational time in hours at given lon_dd, lat_dd. \cr
-  transit_speed \tab A numeric value indicating the transit speed of the vessel in `kts`.
-}
+
+| **name** | **description** |
+| -------- | --------------- |
+| lon_dd | A numeric value indicating longitude in decimal degrees. |
+| lat_dd | A numeric value indicating latitude in decimal degrees. |
+| optime | A numeric value indicating the total expected operational time in hours at given lon_dd, lat_dd. |
+| transit_speed | A numeric value indicating the transit speed of the vessel in `kts`.|
 
 Additional variables that are recommended, but certainly not limited to, if conducting a hydrographic survey :
 
-\tabular{ll}{
-\strong{name} \tab \strong{description} \cr
-  xoptime \tab A numeric value indicating any extra operational time in hours at given lon_dd, lat_dd. \cr
-  station \tab A character string indicating the name of the station. \cr
-  operation \tab An character string indicating the specific operation order for the given operation type (e.g. Net_CTD, Net_CTD_Argo, Net_2_CTD). \cr
-  type \tab A character string indicating the operation type (e.g. `operation`, `transit`).\cr
-}
 
-For the most accurate cruise duration calculations, guessed transit points out and into port should be included.
+| **name** | **description** |
+| -------- | --------------- |
+| xoptime | A numeric value indicating any extra operational time in hours at given lon_dd, lat_dd. |
+| station | A character string indicating the name of the station. |
+| operation | An character string indicating the specific operation order for the given operation type (e.g. Net_CTD, Net_CTD_Argo, Net_2_CTD). |
+| type | A character string indicating the operation type (e.g. `operation`, `transit`).|
+
+For the most accurate cruise duration calculations, a rough estimate of transit points out and into port should be included.
+
+An example data set is provided with the package named `halifaxLineMission`. The user can investigate this example data set within `R` by running the following:
+
+```{r, eval=FALSE}
+library(cruisePlanning)
+data("halifaxLineMission")
+halifaxLineMission 
+```
 
 # Running cruise planning
 
@@ -77,6 +85,8 @@ d <- runCruisePlanning(file = file,
                        startTime = startTime)
 ```
 
+**NOTE**: The `runCruisePlanning` function downloads and caches a `netCDF` file of bathymetry in the working directory, which is used to infer the depth at each `(longitude, latitude)` position. It is **highly** suggested that the user runs the script at least once prior to sailing.
+
 ### writeCsv
 
 The function provides an option if the user would like the mission file with the calculated variables to be written in the working directory. If set to `TRUE`, a `.csv` file will be written in the working directory using the filename from `file`, with the current local date and time that the scenario was ran appended to the end of the filename. If set to `FALSE`, a `.csv` file is not written.
@@ -97,17 +107,20 @@ The next (optional) step is to create a leaflet map, which is output as a `.html
 
 `markerLabelFactor` allows the user to define which factor(s) in `markerColumn` is used to subset the labels from `labelColumn` to be shown on the map. Following the example provided in `markerColumn`, if the user provided `Core Station`, then the coordinates associated with that factor will have a label on the map with the provided value in `labelColumn`. 
 
-The three other optional parameters are shape files for various areas to be plotted on the map. Detail are provided when the user can download the files. It is suggested that when they are downloaded, they are placed in the working directory and are placed within a directory, either separate for each, or all together.
+The three other optional parameters are shape files for various areas to be plotted on the map. Details are provided where the user can download the files. It is suggested that when they are downloaded and placed in the working directory within a directory, either separate for each, or all together.
 
 # Example script
 
-The following is an example of what could routinely be used, given that the user provides an actual file.
+The following is an example of what could routinely be used, given that the user provides an actual file. For this purpose, the example data set is used, and for simplicity, the `writeCsv` and `writeSubsetCsv` parameters are both set to `FALSE`.
+
+If the user is using RStudio, it is suggested that prior to a mission, the user creates a directory and creates an `R Project`. This is useful as the user can open the `.Rproj` file to keep a consistent working directory when running scripts in `RStudio`. Any `.shp` files should be placed in a directory within the project directory (a suggestion would be `shp`).
 
 ```{r, eval=FALSE}
 library(cruisePlanning)
+data("halifaxLineMission")
 # provide path to the file
-file <- 'path/to/file.csv'
-# provide startTime, two suggestions
+#file <- 'path/to/file.csv'
+# provide startTime
 startTime <- ISOdatetime(year = 2024,
                          month = 4,
                          day = 18,
@@ -116,8 +129,15 @@ startTime <- ISOdatetime(year = 2024,
                          sec = 0,
                          tz = "" # leaving it as "" denotes the current time zone, can set to 'UTC'
                          )
-d <- runCruisePlanning(file = file,
-                       startTime = startTime)
-map <- makeCruisePlanningMap(data = d) # leaving all other parameters NULL
+d <- runCruisePlanning(file = halifaxLineMission, # replace `halifaxLineMission` with user defined `file`
+                       startTime = startTime,
+                       writeCsv = FALSE,
+                       writeSubsetCsv = FALSE
+                       )
+# create map
+map <- makeCruisePlanningMap(data = d,
+                             markercolumn = 'type',
+                             labelColumn = 'station',
+                             markerLabelFactor = 'Operations')
 map # to view in 'Viewer' in RStudio.
 ```

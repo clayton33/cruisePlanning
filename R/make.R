@@ -17,6 +17,9 @@
 #' with marine protected areas. See details on where to download this file. Default is `NULL`.
 #' @param ClosureShpFile optional, a connection or a character string giving the name of the `.shp` file associated
 #' with Other Effective Area-Based Conservation Measures (OECM). See details on where to download this file. Default is `NULL`.
+#' @param saveMap a logical value indicating if the `leaflet` map should be saved, `TRUE`, or not, `FALSE`. Default is `FALSE`.
+#' @param mapFilename a character vector of length one of the file name for the map to be saved. If left `NULL`,
+#' and `saveMap = TRUE`, a filename will be constructed following the convention `leaflet_format(Sys.time(), '%Y%m%d_%H%M').html`.
 #'
 #' @details
 #' * NAFO `.shp` file can be downloaded from \url{https://www.nafo.int/Data/GIS} (accessed on 2024-05-15), click on `Divisions`.
@@ -49,6 +52,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom sf st_sf
 #' @importFrom sf st_sfc
+#' @importFrom htmlwidgets saveWidget
 #'
 #' @author Chantelle Layton
 #' @export
@@ -60,7 +64,9 @@ makeCruisePlanningMap <- function(data,
                                   markerPopupNames = NULL,
                                   NAFOShpFile = NULL,
                                   MPAShpFile = NULL,
-                                  ClosureShpFile = NULL
+                                  ClosureShpFile = NULL,
+                                  saveMap = FALSE,
+                                  mapFilename = NULL
                                   ){
   ##
   # check markerColumn input
@@ -282,5 +288,11 @@ makeCruisePlanningMap <- function(data,
       overlayGroups = c("Operations Locations","Transit Locations","Mooring Locations","Route","Station Labels", "Closure Areas", "NAFO Zones", "EEZ"),
       options = leaflet::layersControlOptions(collapsed = TRUE)
     )
+  if(saveMap){
+    if(is.null(mapFilename)){
+      mapFilename <- paste0(paste('leaflet', format(Sys.time(), '%Y%m%d_%H%M'), sep = '_'), '.html')
+    }
+    htmlwidgets::saveWidget(widget = route, file = mapFilename)
+  }
   route
 }

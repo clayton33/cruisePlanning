@@ -14,8 +14,8 @@ runCruisePlanning(
 )
 }
 \arguments{
-\item{file}{a connection or a character string giving the name of the \code{.csv} file to load. See details on the minimum
-and suggested variables.}
+\item{file}{a connection or a character string giving the name of the \code{.csv} file to load or a \code{data.frame} that contains the minimum
+set of variables. See details on the minimum and suggested variables.}
 
 \item{startTime}{a \code{POSIXct} format of the start date time. Suggested to use \code{ISOdatetime()} for simplicity.}
 
@@ -57,6 +57,27 @@ xoptime \tab A numeric value indicating any extra operational time in hours at g
 station \tab A character string indicating the name of the station. \cr
 operation \tab An character string indicating the specific operation order for the given operation type (e.g. Net_CTD, Net_CTD_Argo, Net_2_CTD). \cr
 type \tab A character string indicating the operation type (e.g. \code{operation}, \code{transit}).\cr
+}
+}
+
+\section{Sample of usage }{
+
+\preformatted{
+library(cruisePlanning)
+data(halifaxLineMission)
+startTime <- ISOdatetime(year = 2024,
+                         month = 4,
+                         day = 18,
+                         hour = 6,
+                         min = 0,
+                         sec = 0,
+                         tz = "" # leaving it as "" denotes the current time zone, can set to 'UTC'
+                         )
+d <- runCruisePlanning(file = halifaxLineMission,
+                       startTime = startTime,
+                       writeCsv = FALSE, # for example purposes
+                       writeSubsetCsv = FALSE # for example purposes
+                       )
 }
 }
 

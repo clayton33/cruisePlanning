@@ -12,7 +12,9 @@ makeCruisePlanningMap(
   markerPopupNames = NULL,
   NAFOShpFile = NULL,
   MPAShpFile = NULL,
-  ClosureShpFile = NULL
+  ClosureShpFile = NULL,
+  saveMap = FALSE,
+  mapFilename = NULL
 )
 }
 \arguments{
@@ -40,6 +42,11 @@ with marine protected areas. See details on where to download this file. Default
 
 \item{ClosureShpFile}{optional, a connection or a character string giving the name of the \code{.shp} file associated
 with Other Effective Area-Based Conservation Measures (OECM). See details on where to download this file. Default is \code{NULL}.}
+
+\item{saveMap}{a logical value indicating if the \code{leaflet} map should be saved, \code{TRUE}, or not, \code{FALSE}. Default is \code{FALSE}.}
+
+\item{mapFilename}{a character vector of length one of the file name for the map to be saved. If left \code{NULL},
+and \code{saveMap = TRUE}, a filename will be constructed following the convention \verb{leaflet_format(Sys.time(), '\%Y\%m\%d_\%H\%M').html}.}
 }
 \description{
 Create cruise map

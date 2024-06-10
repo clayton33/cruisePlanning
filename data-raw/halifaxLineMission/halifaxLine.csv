@@ -1,0 +1,26 @@
+lon_dd,lat_dd,station,operation,optime,xoptime,type,transit_speed
+-63.6141,44.6811, ,BIO,0,0,Transit,10
+-63.611,44.676, ,Transit,0,0,Transit,10
+-63.599,44.674, ,Transit,0,0,Transit,10
+-63.584,44.663, ,Transit,0,0,Transit,10
+-63.5687,44.6545, ,Transit,0,0,Transit,10
+-63.5632,44.6397, ,Transit,0,0,Transit,10
+-63.5225,44.5717, ,Transit,0,0,Transit,10
+-63.45,44.4002,HL_01,Net_CTD,1,0,Operations,10
+-63.3167,44.2667,HL_02,4Nets_CTD,2,0,Operations,10
+-62.8833,43.8833,HL_03,Net_CTD,1,0,Operations,10
+-62.7527,43.7635,HL_03.3,Net_CTD,1,0,Operations,10
+-62.4513,43.479,HL_04,Net_CTD,1,0,Operations,10
+-62.0983,43.1825,HL_05,Net_CTD,1.5,0,Operations,10
+-61.8333,42.94,HL_05.5,Net_CTD,2,0,Operations,10
+-61.7333,42.8317,HL_06,Net_CTD,3,0,Operations,10
+-61.6167,42.7333,HL_06.3,Net_CTD,3,0,Operations,10
+-61.5167,42.6183,HL_06.7,Net_CTD,3,0,Operations,10
+-61.4333,42.475,HL_07,Net_CTD_3Argo,5,0,Operations,10
+-63.5225,44.5717, ,Transit,0,0,Transit,10
+-63.5632,44.6397, ,Transit,0,0,Transit,10
+-63.5687,44.6545, ,Transit,0,0,Transit,10
+-63.584,44.663, ,Transit,0,0,Transit,10
+-63.599,44.674, ,Transit,0,0,Transit,10
+-63.611,44.676, ,Transit,0,0,Transit,10
+-63.6141,44.6811, ,BIO,0,0,Transit,10
