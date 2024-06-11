@@ -1,0 +1,221 @@
+# --------------------------------------------
+# CITATION file created with {cffr} R package
+# See also: https://docs.ropensci.org/cffr/
+# --------------------------------------------
+ 
+cff-version: 1.2.0
+message: 'To cite package "cruisePlanning" in publications use:'
+type: software
+license: GPL-2.0-or-later
+title: 'cruisePlanning: Oceanographic Cruise Planning'
+version: 0.1.0
+abstract: Supports the planning of oceanographic cruises.
+authors:
+- family-names: Layton
+  given-names: Chantelle
+  email: Chantelle.Layton@dfo-mpo.gc.ca
+  orcid: https://orcid.org/0000-0002-3199-5763
+contact:
+- family-names: Layton
+  given-names: Chantelle
+  email: Chantelle.Layton@dfo-mpo.gc.ca
+  orcid: https://orcid.org/0000-0002-3199-5763
+references:
+- type: software
+  title: oce
+  abstract: 'oce: Analysis of Oceanographic Data'
+  notes: Imports
+  url: https://dankelley.github.io/oce/
+  repository: https://CRAN.R-project.org/package=oce
+  authors:
+  - family-names: Kelley
+    given-names: Dan
+    email: Dan.Kelley@Dal.Ca
+    orcid: https://orcid.org/0000-0001-7808-5911
+  - family-names: Richards
+    given-names: Clark
+    email: clark.richards@gmail.com
+    orcid: https://orcid.org/0000-0002-7833-206X
+  year: '2024'
+- type: software
+  title: fields
+  abstract: 'fields: Tools for Spatial Data'
+  notes: Imports
+  url: https://github.com/dnychka/fieldsRPackage
+  repository: https://CRAN.R-project.org/package=fields
+  authors:
+  - family-names: Nychka
+    given-names: Douglas
+    email: douglasnychka@gmail.com
+  - family-names: Furrer
+    given-names: Reinhard
+    email: reinhard.furrer@math.uzh.ch
+  - family-names: Paige
+    given-names: John
+    email: paigejo@uw.edu
+  - family-names: Sain
+    given-names: Stephan
+    email: sainsr2@gmail.com
+  - family-names: Gerber
+    given-names: Florian
+    email: flora.fauna.gerber@gmail.com
+  - family-names: Iverson
+    given-names: Matthew
+    email: miverson@mymail.mines.edu
+  year: '2024'
+- type: software
+  title: utils
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
+- type: software
+  title: leaflet
+  abstract: 'leaflet: Create Interactive Web Maps with the JavaScript ''Leaflet''
+    Library'
+  notes: Imports
+  url: https://rstudio.github.io/leaflet/
+  repository: https://CRAN.R-project.org/package=leaflet
+  authors:
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Schloerke
+    given-names: Barret
+    email: barret@posit.co
+    orcid: https://orcid.org/0000-0001-9986-114X
+  - family-names: Karambelkar
+    given-names: Bhaskar
+  - family-names: Xie
+    given-names: Yihui
+  year: '2024'
+- type: software
+  title: sf
+  abstract: 'sf: Simple Features for R'
+  notes: Imports
+  url: https://r-spatial.github.io/sf/
+  repository: https://CRAN.R-project.org/package=sf
+  authors:
+  - family-names: Pebesma
+    given-names: Edzer
+    email: edzer.pebesma@uni-muenster.de
+    orcid: https://orcid.org/0000-0001-8049-7069
+  year: '2024'
+- type: software
+  title: magrittr
+  abstract: 'magrittr: A Forward-Pipe Operator for R'
+  notes: Imports
+  url: https://magrittr.tidyverse.org
+  repository: https://CRAN.R-project.org/package=magrittr
+  authors:
+  - family-names: Bache
+    given-names: Stefan Milton
+    email: stefan@stefanbache.dk
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@rstudio.com
+  year: '2024'
+- type: software
+  title: RColorBrewer
+  abstract: 'RColorBrewer: ColorBrewer Palettes'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=RColorBrewer
+  authors:
+  - family-names: Neuwirth
+    given-names: Erich
+    email: erich.neuwirth@univie.ac.at
+  year: '2024'
+- type: software
+  title: htmlwidgets
+  abstract: 'htmlwidgets: HTML Widgets for R'
+  notes: Imports
+  url: https://github.com/ramnathv/htmlwidgets
+  repository: https://CRAN.R-project.org/package=htmlwidgets
+  authors:
+  - family-names: Vaidyanathan
+    given-names: Ramnath
+  - family-names: Xie
+    given-names: Yihui
+  - family-names: Allaire
+    given-names: JJ
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@rstudio.com
+  - family-names: Sievert
+    given-names: Carson
+    email: carson@rstudio.com
+    orcid: https://orcid.org/0000-0002-4958-2844
+  - family-names: Russell
+    given-names: Kenton
+  year: '2024'
+- type: software
+  title: knitr
+  abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
+  notes: Suggests
+  url: https://yihui.org/knitr/
+  repository: https://CRAN.R-project.org/package=knitr
+  authors:
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  year: '2024'
+- type: software
+  title: rmarkdown
+  abstract: 'rmarkdown: Dynamic Documents for R'
+  notes: Suggests
+  url: https://pkgs.rstudio.com/rmarkdown/
+  repository: https://CRAN.R-project.org/package=rmarkdown
+  authors:
+  - family-names: Allaire
+    given-names: JJ
+    email: jj@posit.co
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
+  - family-names: McPherson
+    given-names: Jonathan
+    email: jonathan@posit.co
+  - family-names: Luraschi
+    given-names: Javier
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevin@posit.co
+  - family-names: Atkins
+    given-names: Aron
+    email: aron@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Chang
+    given-names: Winston
+    email: winston@posit.co
+  - family-names: Iannone
+    given-names: Richard
+    email: rich@posit.co
+    orcid: https://orcid.org/0000-0003-3925-190X
+  year: '2024'
+- type: software
+  title: 'R: A Language and Environment for Statistical Computing'
+  notes: Depends
+  url: https://www.R-project.org/
+  authors:
+  - name: R Core Team
+  institution:
+    name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
+  version: '>= 2.10'
+
