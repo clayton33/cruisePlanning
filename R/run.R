@@ -7,6 +7,8 @@
 #' @param file a connection or a character string giving the name of the `.csv` file to load or a `data.frame` that contains the minimum
 #' set of variables. See details on the minimum and suggested variables.
 #' @param startTime a `POSIXct` format of the start date time. Suggested to use `ISOdatetime()` for simplicity.
+#' @param inferDepth a logical value, if `TRUE` topographic data (ETOPO1) are downloaded and cached in the working directory and is used to infer
+#' the depth at each set of coordinates.
 #' @param writeCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
 #' filename, with the current local date and time appended to the end of the filename.
 #' @param writeSubsetCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
@@ -19,7 +21,7 @@
 #' @section file:
 #' At a minimum, the supplied `.csv` file should include the following variables
 #' \tabular{ll}{
-#' \strong{variable name} \tab \strong{variable description} \cr
+#' \strong{name} \tab \strong{description} \cr
 #' lon_dd \tab A numeric value indicating longitude in decimal degrees. \cr
 #' lat_dd \tab A numeric value indicating latitude in decimal degrees. \cr
 #' optime \tab A numeric value indicating the total expected operational time in hours at given lon_dd, lat_dd. \cr
@@ -27,15 +29,14 @@
 #' }
 #' Additional variables that are suggested (but not limited to):
 #' \tabular{ll}{
-#' \strong{variable name} \tab \strong{variable description} \cr
+#' \strong{name} \tab \strong{description} \cr
 #' xoptime \tab A numeric value indicating any extra operational time in hours at given lon_dd, lat_dd. \cr
 #' station \tab A character string indicating the name of the station. \cr
 #' operation \tab An character string indicating the specific operation order for the given operation type (e.g. Net_CTD, Net_CTD_Argo, Net_2_CTD). \cr
 #' type \tab A character string indicating the operation type (e.g. `operation`, `transit`).\cr
 #' }
 #'
-#' @section Sample of usage :
-#' \preformatted{
+#' @examples
 #' library(cruisePlanning)
 #' data(halifaxLineMission)
 #' startTime <- ISOdatetime(year = 2024,
@@ -48,10 +49,10 @@
 #'                          )
 #' d <- runCruisePlanning(file = halifaxLineMission,
 #'                        startTime = startTime,
+#'                        inferDepth = FALSE, # for example purposes
 #'                        writeCsv = FALSE, # for example purposes
 #'                        writeSubsetCsv = FALSE # for example purposes
 #'                        )
-#' }
 #'
 #'
 #' @author Chantelle Layton
@@ -61,6 +62,7 @@
 #'
 runCruisePlanning <- function(file,
                               startTime,
+                              inferDepth = TRUE,
                               writeCsv = TRUE,
                               writeSubsetCsv = TRUE,
                               subsetNames = c('lon_dd',
@@ -125,17 +127,23 @@ runCruisePlanning <- function(file,
                                                               transitTime = transitTime,
                                                               operationTime = d[['optime']],
                                                               extraOperationTime = xoptime)
-  ## Infer bottom depth
-  bottomDepth <- calculateBottomDepth(longitude = d[['lon_dd']],
-                                      latitude = d[['lat_dd']])
   # Add variables to d
   # reduce number of decimal points for output using sprintf()
   dnew <- data.frame(d,
                      dist_to_next = sprintf('%.2f', distToNextStation),
                      transit_time = sprintf('%.1f', transitTime),
                      arrival_time = arrivalAndDepartureTime[['arrivalTime']],
-                     departure_time = arrivalAndDepartureTime[['departureTime']],
-                     depth = sprintf('%.0f', bottomDepth))
+                     departure_time = arrivalAndDepartureTime[['departureTime']])
+  ## Infer bottom depth
+  if(inferDepth){
+    bottomDepth <- calculateBottomDepth(longitude = d[['lon_dd']],
+                                        latitude = d[['lat_dd']])
+    # Add depth to dnew
+    # reduce number of decimal points for output using sprintf()
+    dnew <- data.frame(dnew,
+                       depth = sprintf('%.0f', bottomDepth))
+  }
+
   # calculate the total time of the planned cruise
   duration <- paste("The estimated total time to complete the proposed cruise is",
                           sprintf('%.2f', difftime(strptime(dnew[['arrival_time']][dim(dnew)[1]],"%Y-%m-%d %H:%M:%S"),
@@ -162,6 +170,7 @@ runCruisePlanning <- function(file,
                                      sep = '_'),
                                '.csv'),
                         sep = '/')
+    cat(paste("Saving full mission plan to", outputFile), sep = "\n")
     utils::write.csv(x = dnew, file = outputFile)
   }
   if(writeSubsetCsv){
@@ -186,6 +195,7 @@ runCruisePlanning <- function(file,
                                      sep = '_'),
                                '.csv'),
                         sep = '/')
+    cat(paste("Saving subset of mission plan to ", outputFile), sep = "\n")
     utils::write.csv(x = dnewsub, file = outputFile)
   }
   return(dnew)

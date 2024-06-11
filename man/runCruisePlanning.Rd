@@ -7,6 +7,7 @@
 runCruisePlanning(
   file,
   startTime,
+  inferDepth = TRUE,
   writeCsv = TRUE,
   writeSubsetCsv = TRUE,
   subsetNames = c("lon_dd", "lat_dd", "operation", "station", "depth", "dist_to_next",
@@ -18,6 +19,9 @@ runCruisePlanning(
 set of variables. See details on the minimum and suggested variables.}
 
 \item{startTime}{a \code{POSIXct} format of the start date time. Suggested to use \code{ISOdatetime()} for simplicity.}
+
+\item{inferDepth}{a logical value, if \code{TRUE} topographic data (ETOPO1) are downloaded and cached in the working directory and is used to infer
+the depth at each set of coordinates.}
 
 \item{writeCsv}{a logical value, if \code{TRUE} a \code{.csv} file will be written in the working directory using the provided
 filename, with the current local date and time appended to the end of the filename.}
@@ -44,7 +48,7 @@ The following provides additional details for what to include in the provided \c
 
 At a minimum, the supplied \code{.csv} file should include the following variables
 \tabular{ll}{
-\strong{variable name} \tab \strong{variable description} \cr
+\strong{name} \tab \strong{description} \cr
 lon_dd \tab A numeric value indicating longitude in decimal degrees. \cr
 lat_dd \tab A numeric value indicating latitude in decimal degrees. \cr
 optime \tab A numeric value indicating the total expected operational time in hours at given lon_dd, lat_dd. \cr
@@ -52,7 +56,7 @@ transit_speed \tab A numeric value indicating the transit speed of the vessel.
 }
 Additional variables that are suggested (but not limited to):
 \tabular{ll}{
-\strong{variable name} \tab \strong{variable description} \cr
+\strong{name} \tab \strong{description} \cr
 xoptime \tab A numeric value indicating any extra operational time in hours at given lon_dd, lat_dd. \cr
 station \tab A character string indicating the name of the station. \cr
 operation \tab An character string indicating the specific operation order for the given operation type (e.g. Net_CTD, Net_CTD_Argo, Net_2_CTD). \cr
@@ -60,9 +64,7 @@ type \tab A character string indicating the operation type (e.g. \code{operation
 }
 }
 
-\section{Sample of usage }{
-
-\preformatted{
+\examples{
 library(cruisePlanning)
 data(halifaxLineMission)
 startTime <- ISOdatetime(year = 2024,
@@ -75,12 +77,13 @@ startTime <- ISOdatetime(year = 2024,
                          )
 d <- runCruisePlanning(file = halifaxLineMission,
                        startTime = startTime,
+                       inferDepth = FALSE, # for example purposes
                        writeCsv = FALSE, # for example purposes
                        writeSubsetCsv = FALSE # for example purposes
                        )
-}
-}
 
+
+}
 \author{
 Chantelle Layton
 }
