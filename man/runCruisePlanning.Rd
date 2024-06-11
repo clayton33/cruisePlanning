@@ -8,6 +8,8 @@ runCruisePlanning(
   file,
   startTime,
   inferDepth = TRUE,
+  lonrange,
+  latrange,
   writeCsv = TRUE,
   writeSubsetCsv = TRUE,
   subsetNames = c("lon_dd", "lat_dd", "operation", "station", "depth", "dist_to_next",
@@ -22,6 +24,14 @@ set of variables. See details on the minimum and suggested variables.}
 
 \item{inferDepth}{a logical value, if \code{TRUE} topographic data (ETOPO1) are downloaded and cached in the working directory and is used to infer
 the depth at each set of coordinates.}
+
+\item{lonrange}{an optional numeric vector of length 2 indicating the range of longitude (west, east) to use to
+download topographic data if \code{inferDepth = TRUE}, otherwise ignored. This is suggested if continuously running scenarios
+during a mission while at sea.}
+
+\item{latrange}{an optional numeric vector of length 2 indicating the range of latitude (south, north) to use to
+download topographic data if \code{inferDepth = TRUE}, otherwise ignored. This is suggested if continuously running scenarios
+during a mission while at sea.}
 
 \item{writeCsv}{a logical value, if \code{TRUE} a \code{.csv} file will be written in the working directory using the provided
 filename, with the current local date and time appended to the end of the filename.}

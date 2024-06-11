@@ -4,12 +4,18 @@
 \alias{calculateBottomDepth}
 \title{Infer bottom depth at stations.}
 \usage{
-calculateBottomDepth(longitude, latitude)
+calculateBottomDepth(longitude, latitude, lonrange = NULL, latrange = NULL)
 }
 \arguments{
 \item{longitude}{A numeric value indicating longitude in decimal degrees.}
 
 \item{latitude}{A numeric value indicating latitude in decimal degrees.}
+
+\item{lonrange}{A numeric vector of length 2 indicating the range of longitude to use to download topographic data. Default is \code{NULL}, meaning
+it will be inferred from the provided \code{longitude}.}
+
+\item{latrange}{A numeric vector of length 2 indicating the range of latitude to use to download topographic data. Default is \code{NULL}, meaning
+it will be inferred from the provided \code{latitude}.}
 }
 \description{
 Infer bottom depth at stations by downloading ETOPO1 dataset using the \code{oce::download.topo()} function.

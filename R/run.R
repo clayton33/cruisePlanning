@@ -9,6 +9,12 @@
 #' @param startTime a `POSIXct` format of the start date time. Suggested to use `ISOdatetime()` for simplicity.
 #' @param inferDepth a logical value, if `TRUE` topographic data (ETOPO1) are downloaded and cached in the working directory and is used to infer
 #' the depth at each set of coordinates.
+#' @param lonrange an optional numeric vector of length 2 indicating the range of longitude (west, east) to use to
+#' download topographic data if `inferDepth = TRUE`, otherwise ignored. This is suggested if continuously running scenarios
+#' during a mission while at sea.
+#' @param latrange an optional numeric vector of length 2 indicating the range of latitude (south, north) to use to
+#' download topographic data if `inferDepth = TRUE`, otherwise ignored. This is suggested if continuously running scenarios
+#' during a mission while at sea.
 #' @param writeCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
 #' filename, with the current local date and time appended to the end of the filename.
 #' @param writeSubsetCsv a logical value, if `TRUE` a `.csv` file will be written in the working directory using the provided
@@ -63,6 +69,8 @@
 runCruisePlanning <- function(file,
                               startTime,
                               inferDepth = TRUE,
+                              lonrange,
+                              latrange,
                               writeCsv = TRUE,
                               writeSubsetCsv = TRUE,
                               subsetNames = c('lon_dd',
@@ -136,8 +144,12 @@ runCruisePlanning <- function(file,
                      departure_time = arrivalAndDepartureTime[['departureTime']])
   ## Infer bottom depth
   if(inferDepth){
+    if(missing(lonrange)) lonrange <- NULL
+    if(missing(latrange)) latrange <- NULL
     bottomDepth <- calculateBottomDepth(longitude = d[['lon_dd']],
-                                        latitude = d[['lat_dd']])
+                                        latitude = d[['lat_dd']],
+                                        lonrange = lonrange,
+                                        latrange = latrange)
     # Add depth to dnew
     # reduce number of decimal points for output using sprintf()
     dnew <- data.frame(dnew,

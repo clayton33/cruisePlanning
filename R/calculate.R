@@ -105,6 +105,10 @@ calculateArrivalAndDepartureTime <- function(startTime,
 #'
 #' @param longitude A numeric value indicating longitude in decimal degrees.
 #' @param latitude A numeric value indicating latitude in decimal degrees.
+#' @param lonrange A numeric vector of length 2 indicating the range of longitude to use to download topographic data. Default is `NULL`, meaning
+#' it will be inferred from the provided `longitude`.
+#' @param latrange A numeric vector of length 2 indicating the range of latitude to use to download topographic data. Default is `NULL`, meaning
+#' it will be inferred from the provided `latitude`.
 #'
 #' @importFrom oce download.topo
 #' @importFrom oce read.topo
@@ -116,7 +120,9 @@ calculateArrivalAndDepartureTime <- function(startTime,
 #'
 
 calculateBottomDepth <- function(longitude,
-                                 latitude){
+                                 latitude,
+                                 lonrange = NULL,
+                                 latrange = NULL){
   # Need to download topo data
   ## define little function for rounding
   mround <- function(x, base, method = 'round'){
@@ -125,16 +131,37 @@ calculateBottomDepth <- function(longitude,
   ## round up to nearest 10 degrees to avoid needing to download
   ## while at sea. rounding to nearest 5 was considered, but 10
   ## will help with boundary cases.
-  lonrange <- c(mround(min(longitude), base = 10, method = 'floor'),
-                mround(max(longitude), base = 10, method = 'ceiling'))
-  latrange <- c(mround(min(latitude), base = 10, method = 'floor'),
-                mround(max(latitude), base = 10, method = 'ceiling'))
-  ## do a check for near boundary cases
-  ## if min/max longitude/latitude is within 2.5 degrees of lon/latrange, +/- 10
-  lonrange <- c(ifelse(abs(min(longitude) - lonrange[1]) < 2.5, lonrange[1] - 10, lonrange[1]),
-                ifelse(abs(max(longitude) - lonrange[2]) < 2.5, lonrange[2] + 10, lonrange[2]))
-  latrange <- c(ifelse(abs(min(latitude) - latrange[1]) < 2.5, latrange[1] - 10, latrange[1]),
-                ifelse(abs(max(latitude) - latrange[2]) < 2.5, latrange[2] + 10, latrange[2]))
+  if(is.null(lonrange)){
+    lonrange <- c(mround(min(longitude), base = 10, method = 'floor'),
+                  mround(max(longitude), base = 10, method = 'ceiling'))
+    ## do a check for near boundary cases
+    ## if min/max longitude/latitude is within 2.5 degrees of lon/latrange, +/- 10
+    lonrange <- c(ifelse(abs(min(longitude) - lonrange[1]) < 2.5, lonrange[1] - 10, lonrange[1]),
+                  ifelse(abs(max(longitude) - lonrange[2]) < 2.5, lonrange[2] + 10, lonrange[2]))
+    ## return lon range for the user to see
+    cat(paste('For topography file : '), sep = '\n')
+    cat(paste0('    Using a longitude range of (', paste(rev(lonrange), collapse = ', '), ')'), sep = '\n')
+  } else {
+    ## return lon range for the user to see
+    cat(paste('For topography file : '), sep = '\n')
+    cat(paste0('    Using a longitude range of (', paste(lonrange, collapse = ', '), ')'), sep = '\n')
+  }
+  if(is.null(latrange)){
+    latrange <- c(mround(min(latitude), base = 10, method = 'floor'),
+                  mround(max(latitude), base = 10, method = 'ceiling'))
+    ## do a check for near boundary cases
+    ## if min/max longitude/latitude is within 2.5 degrees of lon/latrange, +/- 10
+    latrange <- c(ifelse(abs(min(latitude) - latrange[1]) < 2.5, latrange[1] - 10, latrange[1]),
+                  ifelse(abs(max(latitude) - latrange[2]) < 2.5, latrange[2] + 10, latrange[2]))
+    ## return lat range for the user to see
+    cat(paste('For topography file : '), sep = '\n')
+    cat(paste0('    Using a latitude range of (', paste(latrange, collapse = ', '), ')'), sep = '\n')
+  } else {
+    ## return lat range for the user to see
+    cat(paste('For topography file : '), sep = '\n')
+    cat(paste0('    Using a latitude range of (', paste(latrange, collapse = ', '), ')'), sep = '\n')
+  }
+
   ## download topo file
   cat('Downloading topo data in local directory', sep = '\n')
   topoFile <- oce::download.topo(west = lonrange[1], east = lonrange[2],
