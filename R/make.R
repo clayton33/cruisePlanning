@@ -30,6 +30,15 @@
 #' (accessed on 2024-05-15). Under `Data and Resources`, navigate to the `Other Effective Area-Based Conservation Measures` with `dataset` and `SHP`
 #' listed as keywords. Click on `Explore`, then click `Go to resource` and it will download.
 #'
+#' @examples
+#' library(cruisePlanning)
+#' data("halifaxLineMission")
+#' makeCruisePlanningMap(data = halifaxLineMission,
+#'                       markerColumn = "type",
+#'                       labelColumn = "station",
+#'                       markerLabelFactor = "Operations")
+#'
+#'
 #'
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom sf st_read
@@ -170,13 +179,21 @@ makeCruisePlanningMap <- function(data,
   } else {
     nafo <- sf::st_sf(sf::st_sfc())
   }
-
   ## MPA
-  mpa <- sf::st_read(MPAShpFile) %>%
-    sf::st_transform('+proj=longlat +datum=WGS84')
+  if(!is.null(MPAShpFile)){
+    mpa <- sf::st_read(MPAShpFile) %>%
+      sf::st_transform('+proj=longlat +datum=WGS84')
+  } else {
+    mpa <- sf::st_sf(sf::st_sfc())
+  }
   ## Closures
-  closures <- sf::st_read(ClosureShpFile) %>%
-    sf::st_transform('+proj=longlat +datum=WGS84')
+  if(!is.null(ClosureShpFile)){
+    closures <- sf::st_read(ClosureShpFile) %>%
+      sf::st_transform('+proj=longlat +datum=WGS84')
+  } else {
+    closures <- sf::st_sf(sf::st_sfc())
+  }
+
   # Create map
   route <- leaflet::leaflet(data) %>%
     leaflet::fitBounds(min(data$lon_dd),min(data$lat_dd),max(data$lon_dd),max(data$lat_dd)) %>%

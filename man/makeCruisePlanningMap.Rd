@@ -62,6 +62,17 @@ listed as keywords. Click on \code{Explore}, then click \verb{Go to resource} an
 listed as keywords. Click on \code{Explore}, then click \verb{Go to resource} and it will download.
 }
 }
+\examples{
+library(cruisePlanning)
+data("halifaxLineMission")
+makeCruisePlanningMap(data = halifaxLineMission,
+                      markerColumn = "type",
+                      labelColumn = "station",
+                      markerLabelFactor = "Operations")
+
+
+
+}
 \author{
 Chantelle Layton
 }
