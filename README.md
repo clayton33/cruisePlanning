@@ -7,8 +7,8 @@ The primary motivation to develop this package was to centralize and generalize 
 This is currently a provisional package, so it is only available on github. To download :
 
 ```
-library(devtools)
-install_github('clayton33/cruisePlanning', ref = 'main', build_vignettes = TRUE)
+library(remotes)
+remotes::install_github(repo = "clayton33/cruisePlanning"", ref = "main"", build_vignettes = TRUE)
 ```
 
 # General information
