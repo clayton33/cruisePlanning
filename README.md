@@ -8,7 +8,7 @@ This is currently a provisional package, so it is only available on github. To d
 
 ```
 library(remotes)
-remotes::install_github(repo = "clayton33/cruisePlanning"", ref = "main"", build_vignettes = TRUE)
+remotes::install_github(repo = "clayton33/cruisePlanning", ref = "main", build_vignettes = TRUE)
 ```
 
 # General information
